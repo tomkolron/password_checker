@@ -79,6 +79,9 @@ class MainPage(QWidget):
         else: 
             print(str(breaches_found) + ' data breaches found')
         self.data.setText(str(breaches_found) + ' data breaches found')
+        
+        with open("temp.txt",'w') as f:
+            pass
 
     @pyqtSlot()
     def exit_window(self):
@@ -88,7 +91,6 @@ def main():
     app = QApplication(sys.argv)
     w = MainPage(title="password checker")
     sys.exit(app.exec_())
-
 
 if __name__ == '__main__':
     main()
