@@ -1,0 +1,1 @@
+python dependencies: pyqt5, hashlib, sys, requests

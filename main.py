@@ -6,10 +6,6 @@ def hash_pswrd(pswrd):
     hashed_pswrd = hashlib.sha1(pswrd.encode()).hexdigest()
     return hashed_pswrd
 
-
-with open("temp.txt",'w') as f:
-    pass
-
 from PyQt5.QtWidgets import (
         QApplication, QLineEdit, QWidget, QLabel, QPushButton, QInputDialog
     )
@@ -61,25 +57,26 @@ class MainPage(QWidget):
         hash_start = hashed_pswrd[0:5]
         breaches_found = 0
 
-        os.system('curl https://api.pwnedpasswords.com/range/' + hash_start + ' -o temp.txt')
+        import requests
+        req = requests.get('https://api.pwnedpasswords.com/range/' + hash_start)
+        pswords = req.text.split('\n')
 
-        with open('./temp.txt') as f:
+        for line in pswords :
             index = 0
-            for line in f:
-                pswrd_from_database_with_number = hash_start + line.strip().lower()
-                pswrd_from_database = line.strip().lower()[0:35]
-                pswrd_from_database = hash_start + pswrd_from_database
-                print(str(index) + ': ' + pswrd_from_database_with_number)
-                if hashed_pswrd == pswrd_from_database:
-                    breaches_found = pswrd_from_database_with_number[41:len(pswrd_from_database_with_number)]
-                    break
-                index += 1
+            pswrd_from_database_with_number = hash_start + line.strip().lower()
+            pswrd_from_database = line.strip().lower()[0:35]
+            pswrd_from_database = hash_start + pswrd_from_database
+            print(str(index) + ': ' + pswrd_from_database_with_number)
+            if hashed_pswrd == pswrd_from_database:
+                breaches_found = pswrd_from_database_with_number[41:len(pswrd_from_database_with_number)]
+                break
+            index += 1
         if breaches_found == 0:
             print('0 data breaches found')
         else: 
             print(str(breaches_found) + ' data breaches found')
         self.data.setText(str(breaches_found) + ' data breaches found')
-        
+
         with open("temp.txt",'w') as f:
             pass
 
