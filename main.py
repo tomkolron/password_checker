@@ -21,7 +21,6 @@ for line in passwords :
     pswrd_from_database = hash_start + pswrd_from_database
     if hashed_pswrd == pswrd_from_database:
         breaches_found = pswrd_from_database_with_number[41:len(pswrd_from_database_with_number)]
-        print(pswrd_from_database_with_number)
         break
 if breaches_found == 0:
     print('0 data breaches found')
